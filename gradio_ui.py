@@ -1,12 +1,10 @@
 from datetime import datetime
 import pytz
-taipei_tz = pytz.timezone('Asia/Taipei')
-current_time_taipei = datetime.now(taipei_tz)
-current_time_taipei
 import os
 import openai
 import pandas as pd
 import re
+import gradio as gr
 def openai_api(prompt, key):
   openai.api_key = key
   completion = openai.chat.completions.create(
@@ -122,14 +120,15 @@ def generation(course_name, keywords, num, filename, key):
                 print(extract_letter(ans_tester2))
                 print(extract_letter(ans_tester3))
 
+        taipei_tz = pytz.timezone('Asia/Taipei')
+        current_time_taipei = datetime.now(taipei_tz)
+        current_time_taipei
         data_list = [value for key, value in data.items()]
         df = pd.DataFrame(data_list, columns=columns)
         df = df.applymap(lambda x: x.replace('|', '') if isinstance(x, str) else x)
         filename = current_time_taipei.strftime("%Y%m%d%H%M%S")+"_"+filename + ".csv"
         df.to_csv(filename, index=False, encoding='utf-8-sig')
         return filename
-import gradio as gr
-
 with gr.Blocks() as demo:
     with gr.Row():
         api_key_input = gr.Textbox(label="Enter OpenAI API Key", placeholder="OpenAI API 金鑰")
