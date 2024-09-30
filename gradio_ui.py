@@ -1,17 +1,16 @@
 from datetime import datetime
 import pytz
-import os
 import openai
 import pandas as pd
 import re
 import gradio as gr
 def openai_api(prompt, key):
-  openai.api_key = key
-  completion = openai.chat.completions.create(
-      model="o1-preview",
-      messages=[{"role": "user", "content": prompt}]
-      )
-  return completion.choices[0].message.content
+    openai.api_key = key
+    completion = openai.chat.completions.create(
+        model="o1-preview",
+        messages=[{"role": "user", "content": prompt}]
+        )
+    return completion.choices[0].message.content
 def extract_option(text):
     # 使用正規表達式來尋找模式 "|sel-D:| 選項D"
     match = re.search(r'\|sel-D:\|\s*(.*?)\s*(?:\||\.$|$)', text)
@@ -91,26 +90,26 @@ def generation(course_name, keywords, num, filename, key):
                 原則1：考題專家具了解演算法、數據前處理、模型訓練、評估方法以及機器學習的最新進展。\
                 原則2：教育背景具統計分析、人工智慧、數據分析，可持續發展或相關領域的高等教育背景。\
                 原則3：考試的常勝軍，每次都可以考第一名，都可以考滿分。\
-                原則4：考題內容："+quiz;
-                ans_tester1= openai_api(prompt4, key);
+                原則4：考題內容："+quiz
+                ans_tester1= openai_api(prompt4, key)
 
                 # 第五階段：「考生二號試考」提問
                 prompt5="請回覆答案(A、B、C、D)即可不用解釋，請扮演「人工智慧」考題專家並注意下列原則。\
                 原則1：考題專家具人工智慧的專業知識（包括機器學習、自然語言處理、計算機視覺等），包括對基本理論、算法、實踐應用和行業趨勢的全面掌握。\
                 原則2：教育背景具備人工智慧知識，該領域為一個快速發展的領域，專家需要不斷學習和更新知識，以确保考题内容的时效性和前瞻性。\
                 原則3：考試的常勝軍，每次都可以考第一名，都可以考滿分。\
-                原則4：考題內容："+ quiz;
-                ans_tester2= openai_api(prompt5, key);
+                原則4：考題內容："+ quiz
+                ans_tester2= openai_api(prompt5, key)
 
                 # 第六階段：「考生三號試考」提問
                 prompt6="請回覆答案(A、B、C、D)即可不用解釋，請扮演「數據分析」考題專家並注意下列原則。\
                 原則1：考題專家具擁有數據分析深厚知識，包括數據處理、統計分析、機器學習、數據視覺化等。\
                 原則2：教育背景具備數據分析領域的最新發展和趨勢，並保證考題的邏輯性和合理性。\
                 原則3：考試的常勝軍，每次都可以考第一名，都可以考滿分。\
-                原則4：考題內容："+ quiz;
-                ans_tester3= openai_api(prompt6, key);
+                原則4：考題內容："+ quiz
+                ans_tester3= openai_api(prompt6, key)
 
-                print("考生一作答："+ans_tester1+"\n"+"考生二作答："+ans_tester2+"\n"+"考生三作答："+ans_tester3);
+                print("考生一作答："+ans_tester1+"\n"+"考生二作答："+ans_tester2+"\n"+"考生三作答："+ans_tester3)
 
                 data[num] = {'題型*': qtype,'題幹*': response.split("|quiz:|")[1].split("|level:|")[0].strip(),'選項-A': response.split("|sel-A:|")[1].split("|sel-B:|")[0].strip(),
                       '選項-B': response.split("|sel-B:|")[1].split("|sel-C:|")[0].strip(),'選項-C': response.split("|sel-C:|")[1].split("|sel-D:|")[0].strip(),
