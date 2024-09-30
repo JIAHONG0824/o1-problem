@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from gradio_ui import *
+
 app = FastAPI()
 
 @app.get('/')
